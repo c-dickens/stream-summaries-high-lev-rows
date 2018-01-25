@@ -7,7 +7,7 @@ X = [A, b] ;
 feature_idx = 1:size(A,2) ; 
 block_size = 100 ;
 last_index = block_size ; 
-threshold = 0.01 %size(A,2) / (2*block_size) ; % can be adaptively set for p-norm by how much of index set to keep
+threshold = size(A,2) / (block_size) ; % can be adaptively set for p-norm by how much of index set to keep
 
 clear data ; 
 
@@ -32,23 +32,31 @@ B = B(scores>threshold,:) ;
 while last_index < size(A,1)
      rows_to_read = block_size - size(B,1) 
      
-     endpoint = min(last_index+1+rows_to_read,size(A,1))   
+     start_point = last_index+1  
+     end_point = min(last_index+rows_to_read,size(A,1))   
      
      if rows_to_read > 0
-         new_block = X(last_index + 1:endpoint,:) ; 
+         disp('normal reduction')
+         new_block = X(start_point:end_point,:) ; 
          stream_block = [B ; new_block] ; 
          scores = compute_leverage_scores(stream_block(:,feature_idx),2) ; 
-         B = stream_block(scores>threshold,:) ; 
-         size(B) ; 
+         heavy_list = find(scores>threshold) ; 
+         B = stream_block(heavy_list,:) ; 
+         disp('size(B)')
+         size(B) 
+         start_point = end_point + 1 ; 
          last_index = last_index+1+rows_to_read ; 
          
      else
-         
+         disp('storage exceeded reduction') ; 
+         scores = compute_leverage_scores(B(:,feature_idx), 2) ; % compute score just on the columns of A
+         B = B(scores>2*threshold,:) ;
+         size(B) ; 
      end
      
      last_index = last_index + block_size ; 
      last_index 
-     endpoint 
+     end_point 
 %     if rows_to_read == 0
 %         %reduce(B)
 %     else
@@ -64,5 +72,5 @@ while last_index < size(A,1)
 end
 
 
-[~, f_exact] = ell_infinity_reg_solver(A,b) ; 
+%[~, f_exact] = ell_infinity_reg_solver(A,b) ; 
 [~, f_approx] = ell_infinity_reg_solver(B(:,feature_idx),B(:,end)) ;  
