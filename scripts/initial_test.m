@@ -1,10 +1,11 @@
 % Script to test ell_infinity regression with specified block size
-number_of_samples = 100000 ;
+number_of_samples = 1000 ;
 data = load('data/census_data.mat') ;
 A = data.A(1:number_of_samples,:) ; 
 b = data.b(1:number_of_samples) ;
 X = [A, b] ; 
 block_sizes = 1000:1000:10000 ;
+high_leverage_method = "condition_spc3" ; 
 
 
 % independent variables
@@ -18,8 +19,8 @@ clear data ;
 for idx = 1:length(block_sizes)
     block_size = block_sizes(idx)
     % can be adaptively set for p-norm by how much of index set to keep
-    threshold = size(A,2) / (block_size) ; 
-    [B, storage_used] = stream_hlr(X, block_size, 2, threshold) ; 
+    threshold = 10*size(A,2)^1.5 / (block_size) ; 
+    [B, storage_used] = stream_hlr(X, block_size, high_leverage_method, threshold) ; 
     
     % Max storage used tbc
     storage(idx) = storage_used ; 
@@ -32,29 +33,29 @@ for idx = 1:length(block_sizes)
 end
 
 
-% full regression
-tic
-[~, f_exact] = ell_infinity_reg_solver(A,b) ;
-full_regression_time = toc ; 
-full_regression_time = full_regression_time.*ones(length(block_sizes),1) ; 
-error = error./f_exact ; 
-error = 1 - error ; % puts error in range (0,1) ; 
-
-figure
-plot(block_sizes, error)
-title("Error vs block size")
-
-figure
-plot(block_sizes, storage)
-title("Max storage used vs Block Size") 
-
-figure
-scatter(storage, error)
-title("Error vs max storage used")
-
-figure
-hold on
-plot(block_sizes, approx_regression_time)
-plot(block_sizes, full_regression_time) 
-title("Time to solve regression vs block size")
- 
+% % full regression
+% tic
+% [~, f_exact] = ell_infinity_reg_solver(A,b) ;
+% full_regression_time = toc ; 
+% full_regression_time = full_regression_time.*ones(length(block_sizes),1) ; 
+% error = error./f_exact ; 
+% error = 1 - error ; % puts error in range (0,1) ; 
+% 
+% figure
+% plot(block_sizes, error)
+% title("Error vs block size")
+% 
+% figure
+% plot(block_sizes, storage)
+% title("Max storage used vs Block Size") 
+% 
+% figure
+% scatter(storage, error)
+% title("Error vs max storage used")
+% 
+% figure
+% hold on
+% plot(block_sizes, approx_regression_time)
+% plot(block_sizes, full_regression_time) 
+% title("Time to solve regression vs block size")
+%  

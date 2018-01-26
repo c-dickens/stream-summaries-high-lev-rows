@@ -1,15 +1,20 @@
-function [ scores ] = compute_leverage_scores(X, p_norm)
+function [ scores ] = compute_leverage_scores(X, method)
 % compute_leverage_scores:
 % inputs: X - matrix
-%         p - the norm to compute the leverage scores with.
-%         varargin - optional arguments to be added later
+%         method - string to determine which method to use. Should be one
+%         of "orth", "condition_spc3", "spc1++"
 % Output: vector containing all of the leverage scores
 
-switch p_norm
-    case 2
+switch method
+    case "orth"
         disp('compute orthonormal basis') ;
         [Q,~] = qr(X,0) ; 
         scores = sum(Q.^2,2) ; % sums the squred entries along rows
+        
+    case "condition_spc3"
+        disp("ell_1 wcb")
+        [U,~] = condition_spc3(X) ; 
+        scores = sum(abs(U),2) ; 
  
 end
 
