@@ -13,8 +13,7 @@ error = zeros(length(block_sizes),1) ;
 storage = zeros(length(block_sizes),1) ;
 approx_regression_time = zeros(length(block_sizes),1) ; 
 basis_time = zeros(length(block_sizes),1) ; 
-total_stream_time = zeros(length(block_sizes,1)) ;
-%local_basis_times = zeros(length(block_sies,1))) ; 
+total_stream_time = zeros(length(block_sizes,1)) ; 
 clear data ;
 
 
