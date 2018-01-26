@@ -33,13 +33,13 @@ for idx = 1:length(block_sizes)
 end
 
 
-% % full regression
-% tic
-% [~, f_exact] = ell_infinity_reg_solver(A,b) ;
-% full_regression_time = toc ; 
-% full_regression_time = full_regression_time.*ones(length(block_sizes),1) ; 
-% error = error./f_exact ; 
-% error = 1 - error ; % puts error in range (0,1) ; 
+% full regression
+tic
+[~, f_exact] = ell_infinity_reg_solver(A,b) ;
+full_regression_time = toc ; 
+full_regression_time = full_regression_time.*ones(length(block_sizes),1) ; 
+error = error./f_exact ; 
+error = 1 - error ; % puts error in range (0,1) ; 
 % 
 % figure
 % plot(block_sizes, error)
