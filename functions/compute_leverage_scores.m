@@ -15,6 +15,10 @@ switch method
         disp("ell_1 wcb")
         [U,~] = condition_spc3(X) ; 
         scores = sum(abs(U),2) ; 
+    
+    case "identity"
+        disp("identity")
+        scores = sum(X.^2,2) ; 
  
 end
 
