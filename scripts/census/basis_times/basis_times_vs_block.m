@@ -32,6 +32,11 @@ scatter(block_sizes, basis_times(:,2), 'filled', 'DisplayName', "Orth") ;
 title("Time to compute local basis vs block size") ; 
 legend('show')
 
+% save the data for plotting
+save(file_name, 'number_of_samples','block_sizes',...
+        'threshold', 'error',  'storage', 'approx_regression_time',...
+        'full_regression_time', 'total_time', 'exact_ell_inf_score') ; 
+
 
 
 
