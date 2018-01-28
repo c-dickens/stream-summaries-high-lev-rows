@@ -1,4 +1,8 @@
 % Script to test ell_infinity regression with specified block size
+
+% Make sure running in scripts directory
+
+
 number_of_samples = 1000 ;
 data = load('data/census_data.mat') ;
 A = data.A(1:number_of_samples,:) ; 

@@ -8,9 +8,9 @@ number_of_samples = parameters.number_samples ;
 A = data.A(1:number_of_samples,:) ; 
 b = data.b(1:number_of_samples) ;
 X = [A, b] ; 
-block_sizes = parameters.smallest_block:parameters.window_size:parameters.largest_block ;
+block_sizes = parameters.window_size:parameters.window_size:parameters.largest_block ;
 
-% Solve and time the full regression
+
 tic
 [~, f_exact] = ell_infinity_reg_solver(A,b) ;
 full_regression_time = toc ; 
@@ -32,6 +32,7 @@ for method_number = 1:length(parameters.hlr_methods)
     error = zeros(length(block_sizes),1) ;
     storage = zeros(length(block_sizes),1) ;
     approx_regression_time = zeros(length(block_sizes),1) ;
+    total_time = zeros(length(block_sizes),1) ; 
     clear data ;
     
     
@@ -40,8 +41,10 @@ for method_number = 1:length(parameters.hlr_methods)
         block_size = block_sizes(idx)
         % can be adaptively set for p-norm by how much of index set to keep
         threshold = size(A,2)^q / (block_size) ;
-        [B, storage_used] = stream_hlr(X, block_size, high_leverage_method, threshold) ;
         
+        tic ; 
+        [B, storage_used] = stream_hlr(X, block_size, high_leverage_method, threshold) ;
+   
         % Max storage used tbc
         storage(idx) = storage_used ;
         
@@ -50,16 +53,17 @@ for method_number = 1:length(parameters.hlr_methods)
         [~, f_approx] = ell_infinity_reg_solver(B(:,1:size(X,2)-1),B(:,end)) ;
         approx_regression_time(idx) = toc ;
         error(idx) = f_approx ;
+        total_time(idx) = toc ; 
     end
     
     
     % full regression
     error = error./f_exact ;
     error = 1 - error ; % puts error in range (0,1) ;
-    
+    exact_ell_inf_score  = f_exact ; 
     
     % save the data for plotting
     save(file_name, 'number_of_samples','block_sizes',...
         'threshold', 'error',  'storage', 'approx_regression_time',...
-        'full_regression_time') ; 
+        'full_regression_time', 'total_time', 'exact_ell_inf_score') ; 
 end
