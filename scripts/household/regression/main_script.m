@@ -1,26 +1,26 @@
-% main script with parameters(1)
+% main script with parameters(3)
 load('parameters.mat') ; 
-name = parameters(1).name ; 
-data = load(parameters(1).data_path) ;
-number_of_samples = parameters(1).number_samples ; 
+name = parameters(3).name ; 
+data = load(parameters(3).data_path) ;
+number_of_samples = parameters(3).number_samples ; 
 
 
 A = data.A(1:number_of_samples,:) ; 
 b = data.b(1:number_of_samples) ;
 X = [A, b] ; 
-block_sizes = parameters(1).window_size:parameters(1).window_size:parameters(1).largest_block ;
+block_sizes = parameters(3).window_size:parameters(3).window_size:parameters(3).largest_block ;
 
 
-tic
-[~, f_exact] = ell_infinity_reg_solver(A,b) ;
-full_regression_time = toc ; 
-full_regression_time = full_regression_time.*ones(length(block_sizes),1) ;
+% tic
+% [~, f_exact] = ell_infinity_reg_solver(A,b) ;
+% full_regression_time = toc ; 
+% full_regression_time = full_regression_time.*ones(length(block_sizes),1) ;
 
 
 
-for method_number = 1:length(parameters(1).hlr_methods)
-    high_leverage_method = parameters(1).hlr_methods(method_number) ; 
-    file_name = parameters(1).name + "_" + high_leverage_method + ".mat" ; 
+for method_number = 1:length(parameters(3).hlr_methods)
+    high_leverage_method = parameters(3).hlr_methods(method_number) ; 
+    file_name = parameters(3).name + "_" + high_leverage_method + ".mat" ; 
     % Dealing with the wcb exponent
     if high_leverage_method == "condition_spc3" ;
         q = 1.5
@@ -58,12 +58,12 @@ for method_number = 1:length(parameters(1).hlr_methods)
     
     
     % full regression
-    error = error./f_exact ;
-    error = 1 - error ; % puts error in range (0,1) ;
-    exact_ell_inf_score  = f_exact ; 
+%     error = error./f_exact ;
+%     error = 1 - error ; % puts error in range (0,1) ;
+%     exact_ell_inf_score  = f_exact ; 
     
     % save the data for plotting
     save(file_name, 'number_of_samples','block_sizes',...
-        'threshold', 'error',  'storage', 'approx_regression_time',...
-        'full_regression_time', 'total_time', 'exact_ell_inf_score') ; 
+        'threshold', 'error',  'storage', 'approx_regression_time', 'total_time') ; ,...
+        %'full_regression_time', 'total_time', 'exact_ell_inf_score') ; 
 end

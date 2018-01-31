@@ -1,6 +1,8 @@
 function [ x_opt, f_opt ] = ell_infinity_reg_solver( A, b )
 % Solves the ell_infinity regression problem ||Ax - b||_inf.  That is finds
 % the least t for which Ax - b < t.ones and Ax - b > -t.ones.
+% Input: A, b 
+%Output: x_opt, f_opt
 [n,d] = size(A) ;  
 if n == 0
     f_opt  = 0 ;
