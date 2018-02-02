@@ -7,7 +7,8 @@ function [B, max_storage_seen] = stream_hlr(input_matrix, block_size, hlr_method
 %        block_size (memory constraint), 
 %        hlr_method (string to denote which basis to compute) - "orth",
 %        "condition_spc3" or "spc1++"
-%        threshold - bounds the leverge at which to delete rows
+%        threshold - bounds the leverge at which to delete rows.
+%                  - If hlr_method is "identity" then this needs overwriting. 
 % Output: B - submatrix of input matrix with only high leverage rows.
 X = input_matrix ; 
 feature_idx = 1:size(X,2)-1 ;
@@ -17,6 +18,10 @@ max_storage_seen = [block_size; 0 ] ;
 
 %% Base case of iteration
 B = X(1:block_size,:) ; % initialise B as first block_size number of rows 
+
+if hlr_method == "identity"
+    threshold = 1.5/block_size ; 
+end
 scores = compute_leverage_scores(B(:,feature_idx), hlr_method) ; % compute score just on the columns of A
 B = B(scores>threshold,:) ; 
 
@@ -32,6 +37,11 @@ while end_index < size(X,1)
     new_block = X(start_index:end_index,:) ; 
     stream_block = [B ; new_block] ; 
     scores = compute_leverage_scores(stream_block(:,feature_idx),hlr_method) ;
+    
+    if hlr_method == "identity"
+        threshold = 2/size(stream_block,1) ; 
+    end
+    
     heavy_list = find(scores>threshold) ;
     length(heavy_list)
     

@@ -19,7 +19,7 @@ switch method
     case "identity"
         disp("identity")
         scores = sum(X.^2,2) ; 
-        scores = scores./norm(X,2)^2 ; % puts scores into (0,1) ; 
+        scores = scores./norm(X,'fro')^2 ; % puts scores into (0,1) ; 
  
 end
 
