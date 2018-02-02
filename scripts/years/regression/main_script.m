@@ -1,31 +1,38 @@
 % main script with parameters(2)
 load('parameters.mat') ; 
 name = parameters(2).name ; 
-data = load('../../../data/YearPredictionMSD.mat') ;  %YearPredictionsMSD ; % load(parameters(2).data_path) ;
+data = load(parameters(2).data_path) ;
 number_of_samples = parameters(2).number_samples ; 
 
 
-A = data.YearPredictionsMSD(:,1:90) ; 
-b = data.YearPredictionsMSD(:,91) ;
+A = data.A(1:number_of_samples,:) ; 
+b = data.b(1:number_of_samples) ;
 X = [A, b] ; 
 block_sizes = parameters(2).window_size:parameters(2).window_size:parameters(2).largest_block ;
 
 
-% tic
-% [~, f_exact] = ell_infinity_reg_solver(A,b) ;
-% full_regression_time = toc ; 
-% full_regression_time = full_regression_time.*ones(length(block_sizes),1) ;
+
+tic
+[~, f_exact] = ell_infinity_reg_solver(A,b) ;
+full_regression_time = toc ; 
+full_regression_time = full_regression_time.*ones(length(block_sizes),1) ;
 
 
 
-for method_number = 1:length(parameters(2).hlr_methods)
-    high_leverage_method = parameters(2).hlr_methods(method_number) ; 
+for method_number = 3 %1:length(parameters(1).hlr_methods)
+    high_leverage_method = parameters(1).hlr_methods(method_number) ; 
     file_name = parameters(2).name + "_" + high_leverage_method + ".mat" ; 
     % Dealing with the wcb exponent
-    if high_leverage_method == "condition_spc3" ;
-        q = 1.5
-    else
-        q = 1
+    switch high_leverage_method
+        case "orth"
+            threshold_exponent = 1 ; 
+        case "condition_spc3"
+            threshold_exponent = 1.5 ; 
+        case "identity"
+            threshold_exponent = 0 ; % to set numerator to 1.  Doesn't ac
+                                     % actually matter as threshold is 
+                                     %overwritten in the stream_hlr part
+                                     % anyway.
     end
     
     % independent variables
@@ -37,10 +44,10 @@ for method_number = 1:length(parameters(2).hlr_methods)
     
     
     
-    parfor idx = 1:length(block_sizes)
+    for idx = 1:length(block_sizes)
         block_size = block_sizes(idx)
         % can be adaptively set for p-norm by how much of index set to keep
-        threshold = size(A,2)^q / (block_size) ;
+        threshold = size(A,2)^threshold_exponent / (block_size) ;
         
         tic ; 
         [B, storage_used] = stream_hlr(X, block_size, high_leverage_method, threshold) ;
@@ -58,12 +65,12 @@ for method_number = 1:length(parameters(2).hlr_methods)
     
     
     % full regression
-    %error = error./f_exact ;
-    %error = 1 - error ; % puts error in range (0,1) ;
-    %exact_ell_inf_score  = f_exact ; 
+    error = error./f_exact ;
+    error = 1 - error ; % puts error in range (0,1) ;
+    exact_ell_inf_score  = f_exact ; 
     
     % save the data for plotting
-    save(file_name, 'number_of_samples','block_sizes','error',  'storage', 'approx_regression_time') ;
-       %'threshold',  %,...
-        %'full_regression_time', 'total_time') ; %, 'exact_ell_inf_score') ; 
+    save(file_name, 'number_of_samples','block_sizes',...
+        'threshold', 'error',  'storage', 'approx_regression_time',...
+        'full_regression_time', 'total_time', 'exact_ell_inf_score') ; 
 end

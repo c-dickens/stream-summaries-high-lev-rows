@@ -1,13 +1,14 @@
 % Script to test time vs block size
 load('parameters.mat') ; 
-%name = parameters(2).name ; 
-%data = load(parameters(2).data_path) ;
-data = YearPredictionsMSD ; 
+name = parameters(2).name ; 
+data = load(parameters(2).data_path) ;
 number_of_samples = parameters(2).number_samples ; 
 number_for_average_time = 5 ;
- 
-A = data(1:number_of_samples,1:90) ; 
-block_sizes = parameters(2).window_size:parameters(2).window_size:parameters(2).largest_block_for_basis ;
+
+
+A = data.A ; 
+block_sizes = parameters(2).window_size:parameters(2).window_size:parameters(2).largest_block ;
+
 
 
 for method_number = 1:length(parameters(2).hlr_methods)

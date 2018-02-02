@@ -18,14 +18,20 @@ block_sizes = parameters(3).window_size:parameters(3).window_size:parameters(3).
 
 
 
-for method_number = 1:length(parameters(3).hlr_methods)
-    high_leverage_method = parameters(3).hlr_methods(method_number) ; 
+for method_number = 3 %1:length(parameters(1).hlr_methods)
+    high_leverage_method = parameters(1).hlr_methods(method_number) ; 
     file_name = parameters(3).name + "_" + high_leverage_method + ".mat" ; 
     % Dealing with the wcb exponent
-    if high_leverage_method == "condition_spc3" ;
-        q = 1.5
-    else
-        q = 1
+    switch high_leverage_method
+        case "orth"
+            threshold_exponent = 1 ; 
+        case "condition_spc3"
+            threshold_exponent = 1.5 ; 
+        case "identity"
+            threshold_exponent = 0 ; % to set numerator to 1.  Doesn't ac
+                                     % actually matter as threshold is 
+                                     %overwritten in the stream_hlr part
+                                     % anyway.
     end
     
     % independent variables
@@ -40,7 +46,7 @@ for method_number = 1:length(parameters(3).hlr_methods)
     for idx = 1:length(block_sizes)
         block_size = block_sizes(idx)
         % can be adaptively set for p-norm by how much of index set to keep
-        threshold = size(A,2)^q / (block_size) ;
+        threshold = size(A,2)^threshold_exponent / (block_size) ;
         
         tic ; 
         [B, storage_used] = stream_hlr(X, block_size, high_leverage_method, threshold) ;

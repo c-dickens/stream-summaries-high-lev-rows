@@ -1,8 +1,11 @@
 % Script to test time vs block size
+name = 
+
+
 load('parameters.mat') ; 
-name = parameters.name ; 
-data = load(parameters.data_path) ;
-number_of_samples = parameters.number_samples ; 
+name = parameters(2).name ; 
+data = load(parameters(2).data_path) ;
+number_of_samples = parameters(2).number_samples ; 
 number_for_average_time = 5 ;
 
 
