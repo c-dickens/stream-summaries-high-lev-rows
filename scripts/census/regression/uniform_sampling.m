@@ -2,16 +2,16 @@
 % Test the ell_infty regression problem with uniform sampling
 
 load('parameters.mat') ; 
-name = parameters.name ; 
-data = load(parameters.data_path) ;
-number_of_samples = parameters.number_samples ; 
-file_name = parameters.name + "_" + "uniform_sampling.mat" ;
+name = parameters(1).name ; 
+data = load(parameters(1).data_path) ;
+number_of_samples = parameters(1).number_samples ; 
+file_name = parameters(1).name + "_" + "uniform_sampling.mat" ;
 
 
 A = data.A(1:number_of_samples,:) ; 
 b = data.b(1:number_of_samples) ;
 X = [A, b] ; 
-block_sizes = parameters.smallest_block:parameters.window_size:parameters.largest_block ;
+block_sizes = parameters(1).smallest_block:parameters(1).window_size:parameters(1).largest_block ;
 
 % independent variables
 error = zeros(length(block_sizes),1) ;
