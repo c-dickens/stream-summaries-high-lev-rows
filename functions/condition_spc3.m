@@ -1,5 +1,5 @@
 function [B_hat, R] = condition_spc3(A)
-
+    % Taken from https://github.com/chocjy/randomized-quantile-regression-solvers/blob/master/matlab/core/caurnd.m
     % Comments added by C Dickens April 2017.
     % condition_spc3 takes input matrix A of full column rank and outputs a
     % well-conditioned basis B = AR^{-1}

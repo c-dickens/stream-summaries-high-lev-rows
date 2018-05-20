@@ -1,5 +1,5 @@
 function [ scores ] = compute_leverage_scores(X, method)
-% compute_leverage_scores:
+% compute_leverage_scores using given method name:
 % inputs: X - matrix
 %         method - string to determine which method to use. Should be one
 %         of "orth", "condition_spc3", "spc1++"
