@@ -1,23 +1,22 @@
-% Script to test time vs block size
-name = 
-
+% Main script with parameters(1) to choose the census dataset.
+% Test the time taken to compute high leverage rows using conditioning.
 
 load('parameters.mat') ; 
-name = parameters(2).name ; 
-data = load(parameters(2).data_path) ;
-number_of_samples = parameters(2).number_samples ; 
+name = parameters(1).name ; 
+data = load(parameters(1).data_path) ;
+number_of_samples = parameters(1).number_samples ; 
 number_for_average_time = 5 ;
 
 
 A = data.A(1:number_of_samples,:) ; 
-block_sizes = parameters.window_size:parameters.window_size:parameters.largest_block ;
+block_sizes = parameters(1).window_size:parameters(1).window_size:parameters(1).largest_block ;
 
 
 
 
-for method_number = 1:length(parameters.hlr_methods)
-    high_leverage_method = parameters.hlr_methods(method_number) ; 
-    file_name = parameters.name + "_" + high_leverage_method + "_basis_times.mat" ; 
+for method_number = 1:length(parameters(1).hlr_methods)
+    high_leverage_method = parameters(1).hlr_methods(method_number) ; 
+    file_name = parameters(1).name + "_" + high_leverage_method + "_basis_times.mat" ; 
     
     % independent variables
     time_for_basis = zeros(length(block_sizes),1) ;

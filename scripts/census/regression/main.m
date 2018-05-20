@@ -1,4 +1,12 @@
-% main script with parameters(1)
+% Main script with parameters(1) to choose the census dataset.
+% Test the ell_infty regression problem with various methods of
+% conditioning.
+
+
+% Parameter settings are taken from the parameters.mat file which can be
+% changed or altered as necessary.
+
+
 load('parameters.mat') ; 
 name = parameters(1).name ; 
 data = load(parameters(1).data_path) ;
@@ -11,16 +19,27 @@ X = [A, b] ;
 block_sizes = parameters(1).window_size:parameters(1).window_size:parameters(1).largest_block ;
 
 
+
+% To save repeatedly carrying out an expensive computation, the time for
+% full regression has been saved in parameters.mat along with the ell_infty
+% score associated with the minimisation.
+
+
 % tic
 % [~, f_exact] = ell_infinity_reg_solver(A,b) ;
 % full_regression_time = toc ; 
-% full_regression_time = full_regression_time.*ones(length(block_sizes),1) ;
+full_regression_time = parameters(1).full_regression_time ; %full_regression_time.*ones(length(block_sizes),1) ;
 f_exact = parameters(1).exact_ell_inf_score ; 
 
 
-for method_number = 3 %1:length(parameters(1).hlr_methods)
+for method_number = 1:length(parameters(1).hlr_methods)
     high_leverage_method = parameters(1).hlr_methods(method_number) ; 
-    file_name = parameters(1).name + "_" + high_leverage_method + ".mat" ; 
+    file_name = parameters(1).name + "_" + high_leverage_method + ".mat" ;
+    
+    if high_leverage_method == "condition_spc3_check"
+        break ; % just to avoid computing in this case as slow
+    end 
+    
     % Dealing with the wcb exponent
     switch high_leverage_method
         case "orth"

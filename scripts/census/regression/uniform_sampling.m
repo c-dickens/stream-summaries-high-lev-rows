@@ -1,4 +1,6 @@
-% main script with parameters
+% Main script with parameters(1) to choose the census dataset.
+% Test the ell_infty regression problem with uniform sampling
+
 load('parameters.mat') ; 
 name = parameters.name ; 
 data = load(parameters.data_path) ;
