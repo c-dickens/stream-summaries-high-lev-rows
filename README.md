@@ -32,7 +32,8 @@ For example, when computing an orthonormal basis we can use threshold of d / blo
  for every threshold but tor an \ell_1 wcb we need to use d^1.5 / block_size.
 This is dealt with in the code for these two cases and the baselines.
 
-* Some of the code in `functions` are taken from https://github.com/chocjy/randomized-quantile-regression-solvers to generate the `ell_1` well-conditioned bases.
+* Some of the code in `functions` are taken from https://github.com/chocjy/randomized-quantile-regression-solvers to generate the `ell_1` well-conditioned bases.  They have been inclued for completeness and
+are clearly marked in the docstring for the function.
 
 ### Reference
 
