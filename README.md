@@ -9,11 +9,11 @@ is the part on levarge scores and well-conditioned bases from the paper).
 
 ### Example usage:
 
-* Clone/download repo and add to path.
-* Navigate to experiment script i.e `scripts/census/regression`
-* Run `main.m` or corresponding experiment name
-    * Run `uniform_sampling.m`
-* Generate plots using `Plots for census experiments.ipynb` in `figures` directory.
+1. Clone/download repo and add to path.
+2. Navigate to experiment script i.e `scripts/census/regression`
+3. Run `main.m` or corresponding experiment name
+    3a. Run `uniform_sampling.m`
+4 Generate plots using `Plots for census experiments.ipynb` in `figures` directory.
 
 
 ### Notes
