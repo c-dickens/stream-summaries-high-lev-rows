@@ -1,6 +1,6 @@
 # Data Stream Summaries using High Leverage Rows
 
-This repository contains the code used for the experiments in _Leveraging Well-Conditioned Bases: Streaming and Distributed Summaries in Minkowski $p$-Norms_ to be published at ICML 2018.
+This repository contains the MATLAB code used for the experiments in _Leveraging Well-Conditioned Bases: Streaming and Distributed Summaries in Minkowski $p$-Norms_ to be published at ICML 2018.
 
 The general idea is to read a stream of data and keep a small amount of the data in memory.  
 This small summary is gradually updated with more 'important' rows of data where the importance
