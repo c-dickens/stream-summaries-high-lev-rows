@@ -11,9 +11,9 @@ is the part on levarge scores and well-conditioned bases from the paper).
 
 1. Clone/download repo and add to path.
 2. Navigate to experiment script i.e `scripts/census/regression`
-3a. Run `main.m` or corresponding experiment name
-3b. Run `uniform_sampling.m`
-4. Generate plots using `Plots for census experiments.ipynb` in `figures` directory.
+3. Run `main.m` or corresponding experiment name
+4. Run `uniform_sampling.m`
+5. Generate plots using `Plots for census experiments.ipynb` in `figures` directory.
 
 
 ### Notes
