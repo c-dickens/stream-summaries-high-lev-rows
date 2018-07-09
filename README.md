@@ -34,9 +34,6 @@ This is dealt with in the code for these two cases and the baselines.
 
 * Some of the code in `functions` are taken from https://github.com/chocjy/randomized-quantile-regression-solvers to generate the `ell_1` well-conditioned bases.
 
-### Reference
-
-TBA
 
 ### License
 
@@ -45,5 +42,24 @@ Copyright 2018 Charlie Dickens
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+### Reference
+
+@InProceedings{pmlr-v80-cormode18a,
+  title = 	 {Leveraging Well-Conditioned Bases: Streaming and Distributed Summaries in {M}inkowski p-Norms},
+  author = 	 {Cormode, Graham and Dickens, Charlie and Woodruff, David},
+  booktitle = 	 {Proceedings of the 35th International Conference on Machine Learning},
+  pages = 	 {1048--1056},
+  year = 	 {2018},
+  editor = 	 {Dy, Jennifer and Krause, Andreas},
+  volume = 	 {80},
+  series = 	 {Proceedings of Machine Learning Research},
+  address = 	 {Stockholmsmässan, Stockholm Sweden},
+  month = 	 {10--15 Jul},
+  publisher = 	 {PMLR},
+  pdf = 	 {http://proceedings.mlr.press/v80/cormode18a/cormode18a.pdf},
+  url = 	 {http://proceedings.mlr.press/v80/cormode18a.html},
+  abstract = 	 {Work on approximate linear algebra has led to efficient distributed and streaming algorithms for problems such as approximate matrix multiplication, low rank approximation, and regression, primarily for the Euclidean norm $\ell_2$. We study other $\ell_p$ norms, which are more robust for $p < 2$, and can be used to find outliers for $p > 2$. Unlike previous algorithms for such norms, we give algorithms that are (1) deterministic, (2) work simultaneouslyfor every $p \geq 1$, including $p = \infty$, and (3) can be implemented in both distributed and streaming environments. We study $\ell_p$-regression, entrywise $\ell_p$-low rank approximation, and versions of approximate matrix multiplication.}
+}
 
 
