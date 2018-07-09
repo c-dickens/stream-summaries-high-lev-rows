@@ -11,7 +11,8 @@ load('parameters.mat') ;
 name = parameters(1).name ; 
 data = load(parameters(1).data_path) ;
 number_of_samples = parameters(1).number_samples ; 
-
+rng(100)
+num_trials = 5  ; 
 
 A = data.A(1:number_of_samples,:) ; 
 b = data.b(1:number_of_samples) ;
@@ -25,16 +26,17 @@ block_sizes = parameters(1).window_size:parameters(1).window_size:parameters(1).
 % score associated with the minimisation.
 
 
-% tic
-% [~, f_exact] = ell_infinity_reg_solver(A,b) ;
-% full_regression_time = toc ; 
+%tic
+%[~, f_exact] = ell_infinity_reg_solver(A,b) ;
+%full_regression_time = toc ; 
+
 full_regression_time = parameters(1).full_regression_time ; %full_regression_time.*ones(length(block_sizes),1) ;
 f_exact = parameters(1).exact_ell_inf_score ; 
 
 
-for method_number = 1:length(parameters(1).hlr_methods)
-    high_leverage_method = parameters(1).hlr_methods(method_number) ; 
-    file_name = parameters(1).name + "_" + high_leverage_method + ".mat" ;
+for method_number = 1:length(parameters(2).hlr_methods)
+    high_leverage_method = parameters(2).hlr_methods(method_number) ; 
+    file_name = parameters(2).name + "_" + high_leverage_method + ".mat" ;
     
     if high_leverage_method == "condition_spc3_check"
         break ; % just to avoid computing in this case as slow
@@ -63,22 +65,29 @@ for method_number = 1:length(parameters(1).hlr_methods)
     
     
     for idx = 1:length(block_sizes)
-        block_size = block_sizes(idx)
-        % can be adaptively set for p-norm by how much of index set to keep
-        threshold = size(A,2)^threshold_exponent / (block_size) ;
-        
-        tic ; 
-        [B, storage_used] = stream_hlr(X, block_size, high_leverage_method, threshold) ;
-   
-        % Max storage used tbc
-        storage(idx) = storage_used ;
-        
-        % Dimension check is just to grab the features
-        tic
-        [~, f_approx] = ell_infinity_reg_solver(B(:,1:size(X,2)-1),B(:,end)) ;
-        approx_regression_time(idx) = toc ;
-        error(idx) = f_approx ;
-        total_time(idx) = toc ; 
+        for trial = 1:num_trials
+            X = X(randperm(size(X,1)),:) ; 
+            block_size = block_sizes(idx)
+            fprintf("Trial %i, block size %i", trial, block_size) ; 
+            % can be adaptively set for p-norm by how much of index set to keep
+            threshold = size(A,2)^threshold_exponent / (block_size) ;
+            
+            tic ; 
+            [B, storage_used] = stream_hlr(X, block_size, high_leverage_method, threshold) ;
+            % Max storage used tbc
+            storage(idx) = storage(idx) + storage_used ;
+            
+            % Dimension check is just to grab the features
+            tic
+            [~, f_approx] = ell_infinity_reg_solver(B(:,1:size(X,2)-1),B(:,end)) ;
+            approx_regression_time(idx) = approx_regression_time(idx) + toc ;
+            error(idx) = error(idx) + f_approx ;
+            total_time(idx) = total_time(idx) + toc ;   
+        end
+        storage(idx) = storage(idx) / num_trials ; 
+        approx_regression_time(idx) = approx_regression_time(idx) / num_trials ; 
+        error(idx) = error(idx) / num_trials ; 
+        total_time(idx) = total_time(idx) / num_trials ;  
     end
     
     
