@@ -45,21 +45,6 @@ Unless required by applicable law or agreed to in writing, software distributed 
 
 ### Reference
 
-`@InProceedings{pmlr-v80-cormode18a,
-  title = 	 {Leveraging Well-Conditioned Bases: Streaming and Distributed Summaries in {M}inkowski p-Norms},
-  author = 	 {Cormode, Graham and Dickens, Charlie and Woodruff, David},
-  booktitle = 	 {Proceedings of the 35th International Conference on Machine Learning},
-  pages = 	 {1048--1056},
-  year = 	 {2018},
-  editor = 	 {Dy, Jennifer and Krause, Andreas},
-  volume = 	 {80},
-  series = 	 {Proceedings of Machine Learning Research},
-  address = 	 {Stockholmsmässan, Stockholm Sweden},
-  month = 	 {10--15 Jul},
-  publisher = 	 {PMLR},
-  pdf = 	 {http://proceedings.mlr.press/v80/cormode18a/cormode18a.pdf},
-  url = 	 {http://proceedings.mlr.press/v80/cormode18a.html},
-  abstract = 	 {Work on approximate linear algebra has led to efficient distributed and streaming algorithms for problems such as approximate matrix multiplication, low rank approximation, and regression, primarily for the Euclidean norm $\ell_2$. We study other $\ell_p$ norms, which are more robust for $p < 2$, and can be used to find outliers for $p > 2$. Unlike previous algorithms for such norms, we give algorithms that are (1) deterministic, (2) work simultaneouslyfor every $p \geq 1$, including $p = \infty$, and (3) can be implemented in both distributed and streaming environments. We study $\ell_p$-regression, entrywise $\ell_p$-low rank approximation, and versions of approximate matrix multiplication.}
-}`
+The BibTex reference is available at: http://proceedings.mlr.press/v80/cormode18a.html
 
 
